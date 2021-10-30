@@ -12,7 +12,7 @@ ScriptName = "Currerncy Ranking"
 Website = "twitch.tv/jevyanj"
 Description = "Currency Ranking"
 Creator = "JevyanJ"
-Version = "0.1.0"
+Version = "1.0.0"
 
 # ---------------------------
 #   Define Global Variables
@@ -51,10 +51,10 @@ def Init():
 
 
 def Execute(data):
-    global currentRanking
-    if data.GetParam(0) == '!test' and data.UserName == 'JevyanJ':
-        process()
-        Parent.SendStreamMessage('Ranking file updated')
+    # Only uncomment to launch updating with a command
+    # if data.GetParam(0) == '!currency-ranking-test':
+    #     process()
+    #     Parent.SendStreamMessage('Ranking file updated')
     return
 
 
@@ -63,13 +63,18 @@ def ReloadSettings(jsonData):
     return
 
 
-def OpenReadMe():
-    location = os.path.join(os.path.dirname(__file__), "README.md")
+def OpenOutput():
+    path_out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "web").replace("\\", "/")
+    location = os.path.join(os.path.dirname(__file__), "output.txt")
+    with open(location, 'w') as f:
+        f.write(path_out)
     os.startfile(location)
     return
 
 
 def Tick():
+    process()
     return
 
 ###############################################################################
@@ -128,7 +133,6 @@ def getStreamlabsUsers():
     users = top.keys()
     mylist = List[str](users)
     users = Parent.GetCurrencyUsers(mylist)
-    log(json.dumps(settings))
 
     # Filter list
     black_list = settings["black_list"].split(",")
@@ -137,14 +141,12 @@ def getStreamlabsUsers():
         regex = "-"
     black_list_regex = re.compile(regex)
     black_list = list(map(str.strip, black_list))
-    log("Initial users: {}".format(len(users)))
     users = [
         u for u in users if (
             u.UserName not in black_list and
             not bool(black_list_regex.match(u.UserName)) and
             u.TimeWatched >= int(settings["min_time"])
         )]
-    log("Filtered users: {}".format(len(users)))
 
     return users
 

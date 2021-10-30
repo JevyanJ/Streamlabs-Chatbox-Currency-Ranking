@@ -1,13 +1,5 @@
 {
     "output_file": "config.json",
-    "openReadMe": {
-        "type": "button",
-        "label": "Open 'Readme Me' file",
-        "tooltip": "Opens the 'Readme.txt' for this script.",
-        "function": "OpenReadMe",
-        "wsevent": "",
-        "group": ""
-    },
     "black_list": {
         "type": "textbox",
         "value": "",
@@ -27,6 +19,14 @@
         "label": "Minimum time",
         "value": 0,
         "tooltip": "Minimum time (in minutes) watched to appear in the ranking",
+        "group": ""
+    },
+    "get_id": {
+        "type": "button",
+        "label": "Get browser source url",
+        "tooltip": "Get local file url to configure OBS",
+        "function": "OpenOutput",
+        "wsevent": "",
         "group": ""
     }
 }

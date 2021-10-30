@@ -1,11 +1,10 @@
 body {
-    background-color: black;
     overflow: hidden;
 }
 
 .outer-wrapper {
     position: absolute;
-    animation: 70s credits linear infinite;
+    animation: 120s credits linear infinite;
 }
 
 .wrapper {
