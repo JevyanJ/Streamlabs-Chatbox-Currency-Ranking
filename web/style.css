@@ -1,0 +1,44 @@
+body {
+    overflow: hidden;
+}
+
+.outer-wrapper {
+    position: absolute;
+    animation: 50s credits linear infinite;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: Abadi MT Condensed;
+    text-align: center;
+    color: #fff;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 50px;
+    text-shadow: 2px 2px #878787;
+}
+
+.element {
+    font-size: 30px;
+    text-shadow: 2px 2px #878787;
+}
+
+p {
+    margin: 2px;
+}
+
+@keyframes credits {
+    0% {
+        top: 100%;
+    }
+    100% {
+        top: -500%;
+    }
+}

@@ -1,0 +1,6 @@
+<div class="category">
+    {NAME}
+    <div class="element">
+        {ELEMENTS}
+    </div>
+</div>

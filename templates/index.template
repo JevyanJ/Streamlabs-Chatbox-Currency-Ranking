@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Credits</title>
+</head>
+
+<body>
+    <div class="outer-wrapper">
+        <div class="wrapper">
+            {RANKING}
+        </div>
+</body>
+
+</html>

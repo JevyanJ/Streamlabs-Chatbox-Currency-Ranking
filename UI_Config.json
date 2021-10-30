@@ -1,26 +1,5 @@
 {
     "output_file": "config.json",
-    "output": {
-        "type": "textbox",
-        "value": "output.txt",
-        "label": "Output file",
-        "tooltip": "Output file with text to show in OBS",
-        "group": "General"
-    },
-    "margin": {
-        "type": "numberbox",
-        "value": 20,
-        "label": "Margin",
-        "tooltip": "Blank lines before ranking",
-        "group": "General"
-    },
-    "title": {
-        "type": "textbox",
-        "value": "Ranking",
-        "label": "Title",
-        "tooltip": "Title",
-        "group": "General"
-    },
     "openReadMe": {
         "type": "button",
         "label": "Open 'Readme Me' file",
