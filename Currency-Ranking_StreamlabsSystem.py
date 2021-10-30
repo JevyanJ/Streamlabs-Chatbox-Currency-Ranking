@@ -1,19 +1,26 @@
-import codecs
 import os
+import re
+import codecs
 import json
 from System.Collections.Generic import List
 
+
+# ---------------------------
+#   [Required] Script Information
+# ---------------------------
 ScriptName = "Currerncy Ranking"
 Website = "twitch.tv/jevyanj"
 Description = "Currency Ranking"
 Creator = "JevyanJ"
 Version = "0.1.0"
 
-configFile = "config.json"
+# ---------------------------
+#   Define Global Variables
+# ---------------------------
 settings = {}
-command = "!test"
-currentRanking = None
 
+configFile = "config.json"
+command = "!test"
 output = "web/index.html"
 templates = {
     "index": "templates/index.template",
@@ -22,10 +29,11 @@ templates = {
 
 
 def Init():
-    global settings, currentRanking
+    global settings
+
+    #   Load settings
 
     path = os.path.dirname(__file__)
-
     try:
         with codecs.open(
                 os.path.join(path, configFile),
@@ -34,7 +42,10 @@ def Init():
             settings = json.load(file, encoding='utf-8-sig')
     except Exception:
         settings = {
+            "black_list": "",
+            "min_points": 0
         }
+
     process()
     return
 
@@ -46,24 +57,26 @@ def Execute(data):
         Parent.SendStreamMessage('Ranking file updated')
     return
 
-def log(message):
-    Parent.Log(command, str(message))
-    return
-
 
 def ReloadSettings(jsonData):
     Init()
-
     return
 
 
 def OpenReadMe():
-    location = os.path.join(os.path.dirname(__file__), "README.txt")
+    location = os.path.join(os.path.dirname(__file__), "README.md")
     os.startfile(location)
     return
 
 
 def Tick():
+    return
+
+###############################################################################
+
+
+def log(message):
+    Parent.Log(command, str(message))
     return
 
 
@@ -74,6 +87,7 @@ def process():
     ranking = prepareRanking(users)
     order = getOrderRanking(users)
     writeRanking(ranking, order)
+
 
 def equalRankin(ranking, other):
     """Compare two rankings
@@ -97,6 +111,7 @@ def equalRankin(ranking, other):
 
     return True
 
+
 def getStreamlabsUsers():
     """Return all users with streamlabs format
     Return:
@@ -112,8 +127,27 @@ def getStreamlabsUsers():
     top = Parent.GetTopHours(-1)
     users = top.keys()
     mylist = List[str](users)
+    users = Parent.GetCurrencyUsers(mylist)
+    log(json.dumps(settings))
 
-    return Parent.GetCurrencyUsers(mylist)
+    # Filter list
+    black_list = settings["black_list"].split(",")
+    regex = settings["black_list_regex"]
+    if not regex:
+        regex = "-"
+    black_list_regex = re.compile(regex)
+    black_list = list(map(str.strip, black_list))
+    log("Initial users: {}".format(len(users)))
+    users = [
+        u for u in users if (
+            u.UserName not in black_list and
+            not bool(black_list_regex.match(u.UserName)) and
+            u.TimeWatched >= int(settings["min_time"])
+        )]
+    log("Filtered users: {}".format(len(users)))
+
+    return users
+
 
 def prepareRanking(users):
     """Prepare ranking with a CurrencyUsers list
@@ -129,10 +163,11 @@ def prepareRanking(users):
     output = {}
     for user in users:
         if user.Rank in output.keys():
-            output[user.Rank].append(user.UserName)
+            output[user.Rank].append("{}".format(user.UserName))
         else:
             output[user.Rank] = [user.UserName]
     return output
+
 
 def getOrderRanking(users):
     """Return a ranking ordered list.
@@ -149,6 +184,7 @@ def getOrderRanking(users):
         if user.Rank not in ranking:
             ranking.append(user.Rank)
     return ranking
+
 
 def writeRanking(rankings, order):
     """Write ranking on a file
@@ -170,7 +206,7 @@ def writeRanking(rankings, order):
         for user in users:
             ranking_users += "<p>{}</p>\n".format(user)
         rankings_txt += category_template.format(
-                NAME=ranking, ELEMENTS=ranking_users)
+            NAME="{}".format(str.upper(ranking)), ELEMENTS=ranking_users)
 
     index_file = os.path.join(
         os.path.dirname(__file__), templates["index"])

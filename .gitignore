@@ -2,6 +2,8 @@
 output.txt
 .vscode
 index.html
+config.js
+config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

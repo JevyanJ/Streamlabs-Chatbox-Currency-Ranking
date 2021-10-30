@@ -7,5 +7,26 @@
         "function": "OpenReadMe",
         "wsevent": "",
         "group": ""
+    },
+    "black_list": {
+        "type": "textbox",
+        "value": "",
+        "label": "Black list",
+        "tooltip": "List of usernames (separated by comma) to exclude of ranking",
+        "group": ""
+    },
+    "black_list_regex": {
+        "type": "textbox",
+        "value": "-",
+        "label": "Black list regex",
+        "tooltip": "Regex to exclude users of ranking",
+        "group": ""
+    },
+    "min_time": {
+        "type": "numberbox",
+        "label": "Minimum time",
+        "value": 0,
+        "tooltip": "Minimum time (in minutes) watched to appear in the ranking",
+        "group": ""
     }
 }
